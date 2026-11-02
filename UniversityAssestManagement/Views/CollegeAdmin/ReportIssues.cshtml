@@ -1,0 +1,210 @@
+﻿@model UniversityAssetsManagement.Models.ViewModels.ReportIssueViewModel
+@{
+    ViewData["Title"] = "Report Issue";
+    ViewData["ActivePage"] = "CIssue";
+    Layout = "~/Views/Shared/_CollegeLayout.cshtml";
+}
+ 
+<div class="page-header">
+    <div class="page-title-group">
+        <a href="@Url.Action("AssetDetails", "CollegeAdmin", new { id = Model.AssetId })"
+           style="font-size:13px;color:var(--text-muted);text-decoration:none;
+            display:inline-flex;align-items:center;gap:5px;margin-bottom:8px">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Asset Details
+        </a>
+        <div style="display:flex;align-items:center;gap:10px">
+            <div class="stat-icon si-rose" style="width:38px;height:38px;border-radius:10px">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:18px;height:18px">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+            </div>
+            <h1 class="page-title">Report Issue</h1>
+        </div>
+        <p class="page-subtitle" style="margin-top:6px">
+            Report problems or damage with your assets for quick resolution.
+        </p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert-success">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        @TempData["Success"]
+    </div>
+}
+
+<form asp-action="ReportIssues" asp-controller="CollegeAdmin" method="post" id="issueForm" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="AssetId"/>
+    <input type="hidden" asp-for="Name" />
+    <input type="hidden" asp-for="LocationName" />
+
+    <!-- Asset Info Banner — read only, not editable -->
+    <div style="display:flex;align-items:center;gap:14px;
+        padding:14px 18px;
+        background:#fff;
+        border:1px solid var(--border-light);
+        border-radius:var(--radius-md);
+        box-shadow:var(--shadow-card);
+        margin-bottom:22px">
+        <div class="stat-icon si-blue" style="width:40px;height:40px;border-radius:10px;flex-shrink:0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" style="width:18px;height:18px">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M20 7l-8-4-8 4m16 0v10l-8 4-8-4V7" />
+            </svg>
+        </div>
+        <div>
+            <div style="font-size:15px;font-weight:700;color:var(--navy)">@Model.Name</div>
+            <div style="font-size:12.5px;color:#7a8a9e;margin-top:2px">
+                Location: @Model.LocationName
+            </div>
+        </div>
+    </div>
+
+    <!-- Issue Details -->
+    <div class="form-panel">
+        <div class="form-panel-header">
+            <h2>Issue Details</h2>
+            <p>Describe the problem you're experiencing</p>
+        </div>
+        <div class="form-panel-body">
+            <div class="form-grid">
+
+              @*   <!-- Asset Name -->
+                <div>
+                    <label class="field-label">Asset Name <span>*</span></label>
+                    <input asp-for="Name" class="field-input"
+                           placeholder="e.g., Projector in Room 101" required />
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label class="field-label">Location <span>*</span></label>
+                    <select name="LocationId" class="field-select">
+                        <option value="">— Select location —</option>
+
+                        @foreach (var loc in locations)
+                        {
+                            <option value="@loc.Id">@loc.Name</option>
+                        }
+
+                    </select>
+                </div> *@
+
+                <!-- Issue Type -->
+                <div>
+                    <label class="field-label">Issue Type <span style="color:var(--rose)">*</span></label>
+                    <select asp-for="IssueType" class="field-select">
+                        <option>Damage</option>
+                        <option>Malfunction</option>
+                        <option>Missing</option>
+                        <option>Maintenance Needed</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <!-- Severity -->
+                <div>
+                    <label class="field-label">Severity <span style="color:var(--rose)">*</span></label>
+                    <select asp-for="Severity" class="field-select" id="severitySelect"
+                            onchange="updateSeverityBadge(this.value)">
+                        <option selected>Low</option>
+                        <option >Medium</option>
+                        <option>High</option>
+                        <option>Critical</option>
+                    </select>
+                </div>
+                <!-- Severity preview -->
+                <div class="full">
+                    <div id="severityBadge" class="severity-indicator sev-medium">
+                        Severity: <strong>Medium</strong>
+                    </div>
+                </div>
+
+                <!-- Value -->
+                <div>
+                    <label class="field-label">Maintenance Cost (GHS)</label>
+                    <input asp-for="Cost" type="number" step="0.01" min="0"
+                           class="field-input" placeholder="0.00" />
+                </div>
+
+
+                <!-- Description -->
+                <div class="full">
+                    <label class="field-label">Description of Issue <span style="color:var(--rose)">*</span></label>
+                    <textarea asp-for="IssueDescription" class="field-textarea"
+                              placeholder="Please provide detailed information about the issue..."
+                             ></textarea>
+                </div>
+
+                
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Evidence -->
+    <div class="form-panel">
+        <div class="form-panel-header">
+            <h2>Evidence &amp; Documentation</h2>
+            <p>Upload photos or documents showing the issue</p>
+        </div>
+        <div class="form-panel-body">
+            <div class="drop-zone" onclick="document.getElementById('evidenceInput').click()">
+                <div class="dz-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                    </svg>
+                </div>
+                <div class="dz-title">Click to upload evidence</div>
+                <div class="dz-sub">PDF, JPG, PNG — max 10MB, up to 5 files</div>
+                <input type="file" id="evidenceInput" name="Files" multiple accept=".pdf,.jpg,.jpeg,.png"
+                       style="display:none" onchange="showEvidenceNames(this)" />
+            </div>
+            <p id="evidenceNames" style="font-size:12.5px;color:#7a8a9e;margin-top:8px"></p>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;gap:10px">
+        <button type="submit" class="btn-submit btn-submit-danger">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            Submit Report
+        </button>
+        <a href="@Url.Action("AssetDetails", "CollegeAdmin", new { id = Model.AssetId })"
+           class="btn-clear">Cancel</a>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script>
+        const sevClasses = {
+            'Low': 'sev-low', 'Medium': 'sev-medium',
+            'High': 'sev-high', 'Critical': 'sev-critical'
+        };
+
+        function updateSeverityBadge(val) {
+            const badge = document.getElementById('severityBadge');
+            badge.className = 'severity-indicator ' + (sevClasses[val] || 'sev-medium');
+            badge.innerHTML = `Severity: <strong>${val}</strong>`;
+        }
+
+        function showEvidenceNames(input) {
+            const names = Array.from(input.files).map(f => f.name).join(', ');
+            document.getElementById('evidenceNames').textContent =
+                names ? `Selected: ${names}` : '';
+        }
+    </script>
+}

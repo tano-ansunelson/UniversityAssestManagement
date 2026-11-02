@@ -1,0 +1,111 @@
+﻿@model UniversityAssetsManagement.Models.ViewModels.TechnicianViewModel.SaveTechnicianViewModel
+
+@{
+    ViewData["Title"] = "Edit Technician";
+    ViewData["ActivePage"] = "Technicians";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <div class="page-title-group">
+        <a href="@Url.Action("Index", "Technicians")"
+           style="font-size:13px;color:var(--text-muted);text-decoration:none;
+            display:inline-flex;align-items:center;gap:5px;margin-bottom:8px">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Technicians
+        </a>
+        <h1 class="page-title">Edit Technician</h1>
+        <p class="page-subtitle">Update technician details.</p>
+    </div>
+</div>
+
+<form asp-action="Edit" asp-controller="Technicians"
+      method="post" style="max-width:620px">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-panel">
+        <div class="form-panel-header">
+            <h2>Technician Details</h2>
+            <p>Update the information below.</p>
+        </div>
+        <div class="form-panel-body">
+            <div class="form-grid">
+
+                <div class="full">
+                    <label class="field-label">
+                        Full Name <span style="color:var(--rose)">*</span>
+                    </label>
+                    <input asp-for="FullName" class="field-input" />
+                    <span asp-validation-for="FullName"
+                          style="font-size:12px;color:var(--rose);
+                    display:block;margin-top:4px"></span>
+                </div>
+
+                <div>
+                    <label class="field-label">
+                        Email Address <span style="color:var(--rose)">*</span>
+                    </label>
+                    <input asp-for="Email" type="email" class="field-input" />
+                    <span asp-validation-for="Email"
+                          style="font-size:12px;color:var(--rose);
+                    display:block;margin-top:4px"></span>
+                </div>
+
+                <div>
+                    <label class="field-label">
+                        Phone <span style="color:var(--rose)">*</span>
+                    </label>
+                    <input asp-for="PhoneNumber" class="field-input" />
+                    <span asp-validation-for="PhoneNumber"
+                          style="font-size:12px;color:var(--rose);
+                    display:block;margin-top:4px"></span>
+                </div>
+
+                <div>
+                    <label class="field-label">Speciality</label>
+                    <select asp-for="Speciality" class="field-select">
+                        <option value="Electrical">Electrical</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="IT Equipment">IT Equipment</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="field-label">Status</label>
+                    <select asp-for="IsActive" class="field-select">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+        <button type="submit" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
+            </svg>
+            Save Changes
+        </button>
+        <a href="@Url.Action("Index", "Technicians")" class="btn-ghost"
+           style="width:auto;padding:10px 20px">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

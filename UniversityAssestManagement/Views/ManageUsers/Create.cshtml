@@ -1,0 +1,141 @@
+﻿@model UniversityAssestManagement.Models.ViewModels.CreateCollegeUserViewModel
+
+@{
+    ViewData["Title"] = "Add College User";
+    ViewData["ActivePage"] = "ManageUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <div class="page-title-group">
+        <a href="@Url.Action("Index", "ManageUsers")"
+           style="font-size:13px;color:var(--text-muted);text-decoration:none;
+            display:inline-flex;align-items:center;gap:5px;margin-bottom:8px">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Users
+        </a>
+        <h1 class="page-title">Add College User</h1>
+        <p class="page-subtitle">
+            Create a new college administrator account.
+        </p>
+    </div>
+</div>
+
+<form asp-action="Create" asp-controller="ManageUsers" method="post"
+      style="max-width:680px">
+    @Html.AntiForgeryToken()
+
+    <div class="form-panel">
+        <div class="form-panel-header">
+            <h2>Account Details</h2>
+            <p>The college user will be prompted to change their password on first login.</p>
+        </div>
+        <div class="form-panel-body">
+            <div class="form-grid">
+
+                <!-- Full Name -->
+                <div class="full">
+                    <label class="field-label">
+                        Full Name <span style="color:var(--rose)">*</span>
+                    </label>
+                    <input asp-for="FullName" class="field-input"
+                           placeholder="e.g., Dr. John Mensah" />
+                    <span asp-validation-for="FullName"
+                          style="font-size:12px;color:var(--rose);margin-top:4px;display:block"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="full">
+                    <label class="field-label">
+                        Email Address <span style="color:var(--rose)">*</span>
+                    </label>
+                    <input asp-for="Email" type="email" class="field-input"
+                           placeholder="e.g., john.mensah@uam.edu" />
+                    <span asp-validation-for="Email"
+                          style="font-size:12px;color:var(--rose);margin-top:4px;display:block"></span>
+                </div>
+
+                <!-- College -->
+                <div class="full">
+                    <label class="field-label">
+                        Assign College <span style="color:var(--rose)">*</span>
+                    </label>
+                    <select asp-for="CollegeId" class="field-select">
+                        <option value="">— Select a college —</option>
+                        @foreach (var college in Model.Colleges)
+                        {
+                            <option value="@college.Id">@college.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CollegeId"
+                          style="font-size:12px;color:var(--rose);margin-top:4px;display:block"></span>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="field-label">
+                        Temporary Password <span style="color:var(--rose)">*</span>
+                    </label>
+                    <input asp-for="Password" type="password" class="field-input"
+                           placeholder="Min. 6 characters" />
+                    <span asp-validation-for="Password"
+                          style="font-size:12px;color:var(--rose);margin-top:4px;display:block"></span>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label class="field-label">
+                        Confirm Password <span style="color:var(--rose)">*</span>
+                    </label>
+                    <input asp-for="ConfirmPassword" type="password" class="field-input"
+                           placeholder="Repeat password" />
+                    <span asp-validation-for="ConfirmPassword"
+                          style="font-size:12px;color:var(--rose);margin-top:4px;display:block"></span>
+                </div>
+
+                <!-- Info notice -->
+                <div class="full">
+                    <div style="display:flex;align-items:flex-start;gap:10px;
+                        padding:12px 14px;background:rgba(99,102,241,.06);
+                        border:1.5px solid rgba(99,102,241,.15);
+                        border-radius:var(--radius-sm)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                             style="width:16px;height:16px;color:#6366f1;flex-shrink:0;margin-top:1px">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                        </svg>
+                        <p style="font-size:13px;color:#4f46e5;margin:0">
+                            The user will be required to change this password when they
+                            first log in. Share these credentials with them securely.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+        <button type="submit" class="btn-submit">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+            </svg>
+            Create Account
+        </button>
+        <a href="@Url.Action("Index", "ManageUsers")" class="btn-clear">Cancel</a>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

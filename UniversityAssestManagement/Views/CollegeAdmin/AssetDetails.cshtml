@@ -1,0 +1,243 @@
+﻿@model UniversityAssetsManagement.Models.ViewModels.AssetsDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+    ViewData["ActivePage"] = "SAsset";
+    Layout = "~/Views/Shared/_CollegeLayout.cshtml";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="page-title-group">
+        <a href="@Url.Action("Assets", "CollegeAdmin")"
+           style="font-size:13px;color:var(--text-muted);text-decoration:none;
+            display:inline-flex;align-items:center;gap:5px;margin-bottom:8px">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Assets
+        </a>
+        <h1 class="page-title">@Model.Name</h1>
+        <p class="page-subtitle">@Model.CollegeName &bull; @Model.LocationName</p>
+    </div>
+
+   @*  <button class="btn-primary" onclick="location.href='@Url.Action("ReportIssues", "CollegeAdmin")'">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        Log Issue
+    </button> *@
+    <a href="@Url.Action("ReportIssues", "CollegeAdmin", new { assetId = Model.Id })"
+       class="btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+        </svg>
+        Log Issue
+    </a>
+ @*    <button class="btn-primary" onclick="location.href='@Url.Action("ReportIssues", "CollegeAdmin")'">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        Log Issue
+    </button> *@
+</div>
+
+<!-- Stat Cards -->
+<div class="stats-grid" style="margin-bottom:28px">
+
+    <div class="stat-card c-blue">
+        <div class="stat-icon si-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M20 7l-8-4-8 4m16 0v10l-8 4-8-4V7" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@Model.Type</div>
+            <div class="stat-label">Asset Type</div>
+        </div>
+    </div>
+
+    <div class="stat-card @(Model.Status == "Active" ? "c-teal" :
+                                      Model.Status == "Damaged" ? "c-rose" : "c-gold")">
+        <div class="stat-icon @(Model.Status == "Active" ? "si-teal" :
+                                              Model.Status == "Damaged" ? "si-rose" : "si-gold")">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@Model.Status</div>
+            <div class="stat-label">Current Status</div>
+        </div>
+    </div>
+
+    <div class="stat-card c-gold">
+        <div class="stat-icon si-gold">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@Model.Value.ToString("C")</div>
+            <div class="stat-label">Asset Value</div>
+        </div>
+    </div>
+
+    <div class="stat-card c-rose">
+        <div class="stat-icon si-rose">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@Model.TotalRepairCost.ToString("C")</div>
+            <div class="stat-label">Total Repair Cost</div>
+            <div class="stat-meta">@Model.TotalMaintenances maintenance(s)</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Asset Info + Maintenance History -->
+<div class="grid-2">
+
+    <!-- Asset Info panel -->
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <div class="panel-title">Asset Information</div>
+                <div class="panel-subtitle">Full details for this asset</div>
+            </div>
+        </div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:0">
+
+            @{
+                void InfoRow(string label, string value)
+                {
+                    <div style="display:flex;justify-content:space-between;
+                        padding:13px 0;border-bottom:1px solid var(--cream-2)">
+                        <span style="font-size:13px;color:#7a8a9e">@label</span>
+                        <span style="font-size:13.5px;font-weight:500;color:var(--navy)">@value</span>
+                    </div>
+                }
+            }
+
+            @{
+                InfoRow("Asset Name", Model.Name);
+            }
+            @{
+                InfoRow("Location", Model.LocationName);
+            }
+            @{
+                InfoRow("College", Model.CollegeName);
+            }
+            @{
+                InfoRow("Date Added", Model.CreatedAt.ToString("dd MMM yyyy"));
+            }
+            @{
+                InfoRow("Description", Model.Description);
+            }
+
+            <div style="display:flex;justify-content:space-between;
+                padding:13px 0;border-bottom:1px solid var(--cream-2)">
+                <span style="font-size:13px;color:#7a8a9e">Type</span>
+                <span class="badge @(Model.Type == "Bulk" ? "badge-warning" : "badge-navy")">
+                    @Model.Type
+                </span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;
+                padding:13px 0;border-bottom:1px solid var(--cream-2)">
+                <span style="font-size:13px;color:#7a8a9e">Status</span>
+                <span class="badge @(Model.Status == "Active" ? "badge-success" :
+                                                           Model.Status == "Damaged" ? "badge-danger" :
+                                                           "badge-warning")">
+                    @Model.Status
+                </span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;padding:13px 0">
+                <span style="font-size:13px;color:#7a8a9e">Value</span>
+                <span style="font-size:13.5px;font-weight:600;
+                    font-family:'DM Mono',monospace;color:var(--navy)">
+                    @Model.Value.ToString("C")
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Maintenance History panel -->
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <div class="panel-title">Maintenance History</div>
+                <div class="panel-subtitle">
+                    @Model.TotalMaintenances record(s) —
+                    total cost @Model.TotalRepairCost.ToString("C")
+                </div>
+            </div>
+        </div>
+
+        @if (!Model.MaintenanceRecords.Any())
+        {
+            <div style="padding:40px;text-align:center;color:#7a8a9e;font-size:13.5px">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="1.5"
+                     style="width:40px;height:40px;margin:0 auto 12px;display:block;opacity:.3">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877" />
+                </svg>
+                No maintenance records for this asset.
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Cost</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var record in Model.MaintenanceRecords)
+                        {
+                            <tr>
+                                <td class="td-name">@record.IssueDescription</td>
+                                <td style="font-family:'DM Mono',monospace;font-size:13px">
+                                    @record.Cost.ToString("C")
+                                </td>
+                                <td>
+                                    <span class="badge @(record.Status == "Fixed"
+                                                                                  ? "badge-success" : "badge-warning")">
+                                        @record.Status
+                                    </span>
+                                </td>
+                                <td class="td-muted font-mono" style="font-size:12.5px">
+                                    @record.Date.ToString("dd MMM yyyy")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+</div>

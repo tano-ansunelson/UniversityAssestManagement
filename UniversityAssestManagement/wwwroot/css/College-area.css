@@ -1,0 +1,989 @@
+﻿
+/* ═══════════════════════════════════════════════════════
+   COLLEGE USER AREA  — append to site.css
+   ═══════════════════════════════════════════════════════ */
+
+/* ── College Sidebar ─────────────────────────────────── */
+.college-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    z-index: 200;
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+
+    .college-sidebar::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient( 0deg, transparent, transparent 39px, rgba(255,255,255,.02) 39px, rgba(255,255,255,.02) 40px );
+        pointer-events: none;
+    }
+
+    .college-sidebar .sidebar-brand {
+        border-bottom: 1px solid rgba(255,255,255,.06)
+    }
+
+    .college-sidebar .brand-mark {
+        background: linear-gradient(135deg,#6366f1,#818cf8)
+    }
+
+    .college-sidebar .sidebar-nav li a {
+        color: #94a3b8
+    }
+
+        .college-sidebar .sidebar-nav li a:hover {
+            background: rgba(255,255,255,.06);
+            color: #fff
+        }
+
+        .college-sidebar .sidebar-nav li a.active {
+            background: rgba(99,102,241,.18);
+            color: #fff
+        }
+
+            .college-sidebar .sidebar-nav li a.active::before {
+                background: #6366f1
+            }
+
+    .college-sidebar .user-card {
+        background: rgba(255,255,255,.06)
+    }
+
+    .college-sidebar .user-avatar {
+        background: linear-gradient(135deg,#6366f1,#818cf8);
+        color: #fff
+    }
+
+    .college-sidebar .sidebar-footer {
+        border-top: 1px solid rgba(255,255,255,.06)
+    }
+
+
+.submenu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+    .submenu-toggle .submenu-arrow {
+        margin-left: auto;
+        font-size: 11px;
+        transition: transform 0.25s ease;
+    }
+
+        .submenu-toggle .submenu-arrow.rotate {
+            transform: rotate(180deg);
+        }
+
+
+.submenu {
+    display: none;
+    list-style: none;
+    padding-left: 38px;
+    margin-top: 6px;
+}
+
+    .submenu.show {
+        display: block;
+    }
+
+    .submenu a {
+        display: block;
+        padding: 10px 12px;
+        font-size: 14px;
+        color: #94a3b8;
+    }
+
+        .submenu a.active {
+            color: #fff;
+            font-weight: 600;
+        }
+
+.has-submenu > a.active {
+    color: #fff;
+}
+/* ── College role badge in topbar ────────────────────── */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    background: rgba(99,102,241,.1);
+    color: #6366f1;
+    border: 1px solid rgba(99,102,241,.2);
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+/* ── Form panels ─────────────────────────────────────── */
+.form-panel {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    margin-bottom: 22px;
+}
+
+.form-panel-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--cream-2);
+}
+
+    .form-panel-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .form-panel-header p {
+        font-size: 12.5px;
+        color: #7a8a9e;
+        margin-top: 2px
+    }
+
+.form-panel-body {
+    padding: 24px
+}
+
+/* ── Form fields ─────────────────────────────────────── */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+@media(max-width:700px) {
+    .form-grid {
+        grid-template-columns: 1fr
+    }
+}
+
+.form-grid .full {
+    grid-column: 1 / -1
+}
+
+.field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 6px;
+}
+
+    .field-label span {
+        color: var(--rose)
+    }
+
+.field-input,
+.field-select,
+.field-textarea {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
+    color: var(--navy);
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+    .field-input::placeholder,
+    .field-textarea::placeholder {
+        color: #a0aec0
+    }
+
+    .field-input:focus,
+    .field-select:focus,
+    .field-textarea:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+    }
+
+.field-textarea {
+    resize: vertical;
+    min-height: 110px
+}
+
+/* ── File drop zone ──────────────────────────────────── */
+.drop-zone {
+    border: 2px dashed var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 36px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+}
+
+    .drop-zone:hover {
+        border-color: #6366f1;
+        background: rgba(99,102,241,.03)
+    }
+
+    .drop-zone .dz-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(99,102,241,.1);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 12px;
+    }
+
+        .drop-zone .dz-icon svg {
+            width: 22px;
+            height: 22px;
+            color: #6366f1
+        }
+
+    .drop-zone .dz-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--navy)
+    }
+
+    .drop-zone .dz-sub {
+        font-size: 12.5px;
+        color: #7a8a9e;
+        margin-top: 4px
+    }
+
+/* ── Severity indicator ──────────────────────────────── */
+.severity-indicator {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.sev-low {
+    border-color: #22c55e;
+    background: rgba(34,197,94,.06);
+    color: #166534
+}
+
+.sev-medium {
+    border-color: #6366f1;
+    background: rgba(99,102,241,.06);
+    color: #3730a3
+}
+
+.sev-high {
+    border-color: #f59e0b;
+    background: rgba(245,158,11,.06);
+    color: #92400e
+}
+
+.sev-critical {
+    border-color: #ef4444;
+    background: rgba(239,68,68,.06);
+    color: #991b1b
+}
+
+/* ── Form action buttons ─────────────────────────────── */
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 22px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background .15s, transform .1s, box-shadow .15s;
+    box-shadow: 0 2px 8px rgba(99,102,241,.25);
+}
+
+    .btn-submit:hover {
+        background: #4f46e5;
+        transform: translateY(-1px)
+    }
+
+    .btn-submit svg {
+        width: 15px;
+        height: 15px
+    }
+
+.btn-submit-danger {
+    background: var(--rose);
+    box-shadow: 0 2px 8px rgba(224,92,107,.25);
+}
+
+    .btn-submit-danger:hover {
+        background: #c94d5c
+    }
+
+.btn-clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 22px;
+    background: var(--cream);
+    color: #7a8a9e;
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+    .btn-clear:hover {
+        background: var(--cream-2)
+    }
+
+/* ── Success / alert banner ──────────────────────────── */
+.alert-success {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 16px;
+    background: rgba(47,184,160,.08);
+    border: 1.5px solid rgba(47,184,160,.25);
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    color: #1a7a6a;
+    margin-bottom: 22px;
+}
+
+    .alert-success svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0
+    }
+
+/* ── Mini stat cards (submissions page) ─────────────── */
+.mini-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.mini-stat {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+}
+
+    .mini-stat .ms-val {
+        font-family: 'Playfair Display',serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--navy)
+    }
+
+    .mini-stat .ms-lbl {
+        font-size: 11.5px;
+        color: #7a8a9e;
+        margin-top: 3px
+    }
+
+.ms-val.c-success {
+    color: var(--teal)
+}
+
+.ms-val.c-warning {
+    color: var(--amber)
+}
+
+.ms-val.c-primary {
+    color: #6366f1
+}
+
+.ms-val.c-danger {
+    color: var(--rose)
+}
+
+/* ── Submission type badge ───────────────────────────── */
+.type-upload {
+    background: rgba(99,102,241,.1);
+    color: #4f46e5;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600
+}
+
+.type-issue {
+    background: rgba(224,92,107,.1);
+    color: var(--rose);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600
+}
+
+/* ── Submission status badges ────────────────────────── */
+.badge-approved {
+    background: rgba(47,184,160,.1);
+    color: #1a7a6a;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600
+}
+
+.badge-pending-sub {
+    background: rgba(232,148,58,.1);
+    color: #c47d1a;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600
+}
+
+.badge-inprogress {
+    background: rgba(99,102,241,.1);
+    color: #4f46e5;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600
+}
+
+.badge-resolved {
+    background: rgba(47,184,160,.1);
+    color: #1a7a6a;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600
+}
+
+.badge-rejected {
+    background: rgba(224,92,107,.1);
+    color: var(--rose);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600
+}
+
+/* ── Rejected notice card ────────────────────────────── */
+.rejected-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(224,92,107,.06);
+    border: 1.5px solid rgba(224,92,107,.2);
+    border-radius: var(--radius-md);
+}
+
+    .rejected-notice svg {
+        width: 18px;
+        height: 18px;
+        color: var(--rose);
+        flex-shrink: 0;
+        margin-top: 2px
+    }
+
+    .rejected-notice h4 {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--navy)
+    }
+
+    .rejected-notice p {
+        font-size: 13px;
+        color: #7a8a9e;
+        margin-top: 4px
+    }
+
+    .rejected-notice a {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--rose);
+        text-decoration: none;
+        margin-top: 8px;
+        display: inline-block
+    }
+
+        .rejected-notice a:hover {
+            text-decoration: underline
+        }
+
+
+
+
+/* ── Avatar dropdown modal ── */
+.avatar-wrap {
+    position: relative;
+}
+
+.avatar-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 220px;
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lift);
+    z-index: 500;
+    overflow: hidden;
+}
+
+    .avatar-dropdown.open {
+        display: block;
+    }
+
+.ad-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--cream-2);
+    background: var(--cream);
+}
+
+.ad-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.ad-email {
+    font-size: 12px;
+    color: #7a8a9e;
+    margin-top: 2px;
+    word-break: break-all;
+}
+
+.ad-college {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-top: 4px;
+}
+
+.ad-divider {
+    height: 1px;
+    background: var(--cream-2);
+}
+
+.ad-logout-form {
+    padding: 8px;
+}
+
+.ad-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 9px 12px;
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--rose);
+    cursor: pointer;
+    transition: background .15s;
+}
+
+    .ad-logout-btn:hover {
+        background: rgba(224,92,107,.08);
+    }
+
+    .ad-logout-btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+.top-avatar {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Location modal */
+/* ── Modal ── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(14,21,37,.5);
+    z-index: 600;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+.modal-box {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    width: 100%;
+    max-width: 420px;
+    margin: 24px;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--cream-2);
+}
+
+    .modal-header h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 0;
+    }
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #7a8a9e;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background .15s;
+    display: flex;
+    align-items: center;
+}
+
+    .modal-close:hover {
+        background: var(--cream);
+    }
+
+    .modal-close svg {
+        width: 18px;
+        height: 18px;
+    }
+
+.modal-body {
+    padding: 22px;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 10px;
+    padding: 0 22px 22px;
+}
+
+/* ── Location cards ── */
+.locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.location-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: box-shadow .2s, transform .2s;
+}
+
+    .location-card:hover {
+        box-shadow: var(--shadow-lift);
+        transform: translateY(-2px);
+    }
+
+    .location-card .lc-icon {
+        width: 42px;
+        height: 42px;
+        background: var(--navy);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .location-card .lc-icon svg {
+            width: 18px;
+            height: 18px;
+            color: var(--gold);
+        }
+
+    .location-card .lc-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--navy);
+    }
+
+    .location-card .lc-count {
+        font-size: 12px;
+        color: #7a8a9e;
+        margin-top: 2px;
+    }
+
+.empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: #7a8a9e;
+}
+
+    .empty-state svg {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 14px;
+        opacity: .35;
+    }
+
+    .empty-state p {
+        font-size: 14px;
+        margin-top: 6px;
+    }
+    /*delete modal*/
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(14,21,37,.5);
+    z-index: 600;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+.modal-box {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    width: 100%;
+    max-width: 420px;
+    margin: 24px;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--cream-2);
+}
+
+    .modal-header h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 0;
+    }
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #7a8a9e;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    transition: background .15s;
+}
+
+    .modal-close:hover {
+        background: var(--cream);
+    }
+
+    .modal-close svg {
+        width: 18px;
+        height: 18px;
+    }
+
+.modal-body {
+    padding: 22px;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 10px;
+    padding: 0 22px 22px;
+}
+
+
+/*college locations style*/
+.summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.summary-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-card);
+}
+
+    .summary-card .s-val {
+        font-family: 'Playfair Display', serif;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .summary-card .s-lbl {
+        font-size: 12px;
+        color: #7a8a9e;
+        margin-top: 3px;
+    }
+
+.loc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+}
+
+.loc-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: var(--shadow-card);
+    transition: border-color .15s, box-shadow .2s, transform .2s;
+}
+
+    .loc-card:hover {
+        border-color: var(--navy);
+        box-shadow: var(--shadow-lift);
+        transform: translateY(-2px);
+    }
+
+.loc-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loc-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(74,158,202,.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .loc-icon-wrap svg {
+        width: 18px;
+        height: 18px;
+        color: var(--sky);
+    }
+
+.loc-asset-badge {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+    .loc-asset-badge.has-assets {
+        background: rgba(47,184,160,.1);
+        color: #1a7a6a;
+    }
+
+    .loc-asset-badge.no-assets {
+        background: var(--cream);
+        color: #7a8a9e;
+    }
+
+.loc-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.loc-college {
+    font-size: 12.5px;
+    color: #7a8a9e;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 3px;
+}
+
+    .loc-college svg {
+        width: 12px;
+        height: 12px;
+    }
+
+.loc-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--cream-2);
+}
+
+.loc-action-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: #7a8a9e;
+    text-decoration: none;
+    transition: background .15s, color .15s, border-color .15s;
+}
+
+    .loc-action-btn:hover {
+        background: var(--cream);
+        color: var(--navy);
+        border-color: var(--navy);
+    }
+
+    .loc-action-btn svg {
+        width: 13px;
+        height: 13px;
+    }
+
+@media (max-width: 768px) {
+    .summary-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

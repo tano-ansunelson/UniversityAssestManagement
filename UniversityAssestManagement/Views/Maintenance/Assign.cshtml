@@ -1,0 +1,167 @@
+﻿@model UniversityAssetsManagement.Models.ViewModels.AssignTechnicianViewModel
+
+@{
+    ViewData["Title"] = "Assign Technician";
+    ViewData["ActivePage"] = "Maintenance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <div class="page-title-group">
+        <a href="@Url.Action("Index", "Maintenance")"
+           style="font-size:13px;color:var(--text-muted);text-decoration:none;
+            display:inline-flex;align-items:center;gap:5px;margin-bottom:8px">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Maintenance
+        </a>
+        <h1 class="page-title">Assign Technician</h1>
+        <p class="page-subtitle">
+            @Model.TicketId &bull; @Model.AssetName
+        </p>
+    </div>
+</div>
+
+<!-- Issue Summary -->
+<div class="panel" style="margin-bottom:22px">
+    <div class="panel-header">
+        <div>
+            <div class="panel-title">Issue Summary</div>
+            <div class="panel-subtitle">
+                @Model.CollegeName &bull; @Model.LocationName
+            </div>
+        </div>
+        <span class="badge badge-warning">@Model.CurrentStatus</span>
+    </div>
+    <div style="padding:18px 24px">
+        <p style="font-size:13.5px;color:var(--navy);
+            background:var(--cream);padding:12px 16px;
+            border-radius:var(--radius-sm);margin:0;line-height:1.6">
+            @Model.IssueDescription
+        </p>
+    </div>
+</div>
+
+<form asp-action="Assign" asp-controller="Maintenance" method="post"
+      style="max-width:620px">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="RecordId" />
+    <input type="hidden" asp-for="AssetName" />
+    <input type="hidden" asp-for="CollegeName" />
+    <input type="hidden" asp-for="LocationName" />
+    <input type="hidden" asp-for="IssueDescription" />
+    <input type="hidden" asp-for="TicketId" />
+
+    <div class="form-panel">
+        <div class="form-panel-header">
+            <h2>Select Technician</h2>
+            <p>Only active technicians are shown. An email will be sent automatically.</p>
+        </div>
+        <div class="form-panel-body">
+
+            @if (!Model.Technicians.Any())
+            {
+                <div style="padding:20px;text-align:center;color:#7a8a9e;font-size:13.5px">
+                    No active technicians available.
+                    <a href="@Url.Action("Create", "Technicians")"
+                       style="color:var(--sky);font-weight:600">
+                        Add one here.
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="display:flex;flex-direction:column;gap:10px">
+                    @foreach (var tech in Model.Technicians)
+                    {
+                        <label style="display:flex;align-items:center;gap:14px;
+                            padding:14px 16px;
+                            border:1.5px solid var(--border-light);
+                            border-radius:var(--radius-md);
+                            cursor:pointer;transition:border-color .15s;
+                            background:#fff"
+                               onclick="this.style.borderColor='var(--navy)'">
+                            <input type="radio" name="TechnicianId"
+                                   value="@tech.Id"
+                                   style="width:16px;height:16px;accent-color:var(--navy)" />
+
+                            <!-- Avatar initials -->
+                            <div style="width:38px;height:38px;border-radius:50%;
+                                background:var(--navy);color:var(--gold);
+                                display:flex;align-items:center;
+                                justify-content:center;
+                                font-size:13px;font-weight:700;flex-shrink:0">
+                                @string.Concat(tech.FullName.Split(' ')
+                                    .Where(w => w.Length > 0)
+                                    .Take(2)
+                                    .Select(w => w[0].ToString().ToUpper()))
+                            </div>
+
+                            <div style="flex:1">
+                                <div style="font-size:14px;font-weight:600;
+                                    color:var(--navy)">
+                                    @tech.FullName
+                                </div>
+                                <div style="font-size:12.5px;color:#7a8a9e;margin-top:2px">
+                                    @tech.Email
+                                </div>
+                            </div>
+
+                            <span class="badge badge-navy">@tech.Speciality</span>
+                        </label>
+                    }
+                </div>
+
+                <span asp-validation-for="TechnicianId"
+                      style="font-size:12px;color:var(--rose);
+                display:block;margin-top:8px"></span>
+
+                <!-- Email notice -->
+                <div style="display:flex;align-items:flex-start;gap:10px;
+                    padding:12px 14px;margin-top:18px;
+                    background:rgba(47,184,160,.06);
+                    border:1.5px solid rgba(47,184,160,.2);
+                    border-radius:var(--radius-sm)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                         style="width:16px;height:16px;color:var(--teal);
+                        flex-shrink:0;margin-top:1px">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                    </svg>
+                    <p style="font-size:13px;color:#1a7a6a;margin:0">
+                        The selected technician will automatically receive an email
+                        with the full job details upon assignment.
+                    </p>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    @if (Model.Technicians.Any())
+    {
+        <div style="display:flex;gap:10px">
+            <button type="submit" class="btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                Assign &amp; Send Email
+            </button>
+            <a href="@Url.Action("Index", "Maintenance")" class="btn-ghost"
+               style="width:auto;padding:10px 20px">Cancel</a>
+        </div>
+    }
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

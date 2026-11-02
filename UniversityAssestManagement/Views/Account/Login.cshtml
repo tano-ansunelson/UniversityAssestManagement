@@ -1,0 +1,96 @@
+﻿@model UniversityAssestManagement.Models.ViewModels.LoginViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Admin Login";
+   
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UAM – Administrator Login</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/Login.css" />
+   
+</head>
+<body>
+
+    <div class="login-card">
+
+        <!-- Header -->
+        <div class="login-header">
+
+            <div class="admin-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+                Administrator Access
+            </div>
+
+            <div class="login-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M20 7l-8-4-8 4m16 0v10l-8 4-8-4V7" />
+                </svg>
+            </div>
+
+            <h1>University Asset Management</h1>
+            <p>Sign in to manage assets, maintenance and inventory records.</p>
+
+        </div>
+
+        <!-- Form -->
+        <form class="login-form" asp-controller="Account" asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Validation error from TempData -->
+            @if (TempData["LoginError"] != null)
+            {
+                <div class="login-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                    @TempData["LoginError"]
+                </div>
+            }
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input asp-for="Email" type="email" name="Email"
+                       placeholder="admin@university.edu" required
+                       @* autocomplete="email" *@ />
+                <span asp-validation-for="Email"></span>
+            </div>
+
+            <div class="form-group">
+                <label  for="password">Password</label>
+                <input asp-for="Password" type="password"  name="Password"
+                       placeholder="Enter your password" required
+                      @*  autocomplete="current-password" *@ />
+            </div>
+
+            <button  type="submit" class="btn-login">Sign In</button>
+@* 
+            <p class="college-link">
+                College user?
+                <a href="@Url.Action("CollegeLogin", "Account")">Sign in here</a>
+            </p> *@
+
+        </form>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            &copy; @DateTime.Now.Year University Asset Management System
+        </div>
+
+    </div>
+
+</body>
+</html>

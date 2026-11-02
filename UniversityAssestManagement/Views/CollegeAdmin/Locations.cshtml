@@ -1,0 +1,383 @@
+﻿@model List<UniversityAssestManagement.Models.Location>
+
+@{
+    ViewData["Title"] = "Locations";
+    ViewData["ActivePage"] = "CLocation";
+    Layout = "~/Views/Shared/_CollegeLayout.cshtml";
+}
+
+<style>
+   
+</style>
+
+<div class="page-header">
+    <div class="page-title-group">
+        <h1 class="page-title">Locations</h1>
+        <p class="page-subtitle">
+            @ViewBag.CollegeName &bull; @Model.Count location(s)
+        </p>
+    </div>
+    <button class="btn-primary" onclick="openModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        Add Location
+    </button>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert-success" style="margin-bottom:20px">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;
+        background:rgba(224,92,107,.08);border:1.5px solid rgba(224,92,107,.2);
+        border-radius:var(--radius-sm);margin-bottom:20px;
+        font-size:13.5px;color:var(--rose)">
+        @TempData["Error"]
+    </div>
+}
+
+@{
+    int totalAssets = Model.Sum(l => l.Assets.Count);
+    int withAssets = Model.Count(l => l.Assets.Count > 0);
+    int emptyLocs = Model.Count(l => l.Assets.Count == 0);
+}
+
+
+
+
+<!-- Summary Strip -->
+<div class="stats-grid" style="margin-bottom:28px">
+    
+    <div class="stat-card c-blue">
+        <div class="stat-icon si-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0L6.343 16.657a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@Model.Count</div>
+            <div class="stat-label">Total locations</div>
+        </div>
+    </div>
+    <!--class="summary-strip" -->
+    <div class="stat-card c-teal">
+        <div class="stat-icon si-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@withAssets</div>
+            <div class="stat-label">With assets</div>
+        </div>
+    </div>
+
+    <div class="stat-card c-rose">
+        <div class="stat-icon si-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@emptyLocs</div>
+            <div class="stat-label">Empty locations</div>
+        </div>
+    </div>
+
+    <div class="stat-card c-gold">
+        <div class="stat-icon si-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+            </svg>
+        </div>
+        <div class="stat-body">
+            <div class="stat-val">@totalAssets</div>
+            <div class="stat-label">Total Assets</div>
+        </div>
+    </div>
+   @*  <div class="summary-card">
+        <div class="s-val">@Model.Count</div>
+        <div class="s-lbl">Total locations</div>
+    </div>
+    <div class="summary-card">
+        <div class="s-val">@withAssets</div>
+        <div class="s-lbl">With assets</div>
+    </div>
+    <div class="summary-card">
+        <div class="s-val">@emptyLocs</div>
+        <div class="s-lbl">Empty locations</div>
+    </div>
+    <div class="summary-card">
+        <div class="s-val">@totalAssets</div>
+        <div class="s-lbl">Total assets</div>
+    </div> *@
+</div>
+
+<!-- Location Cards -->
+@if (!Model.Any())
+{
+    <div class="panel" style="padding:60px;text-align:center;color:#7a8a9e">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="1.5"
+             style="width:48px;height:48px;margin:0 auto 14px;display:block;opacity:.3">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0L6.343 16.657a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <strong style="font-size:15px;color:var(--navy)">No locations yet</strong>
+        <p style="margin-top:6px;font-size:13.5px">
+            Click "Add Location" to create your first location.
+        </p>
+    </div>
+}
+else
+{
+    <div class="loc-grid">
+        @foreach (var location in Model.OrderByDescending(l => l.Assets.Count))
+        {
+            <div class="loc-card">
+                <div class="loc-card-top">
+                    <div class="loc-icon-wrap">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0L6.343 16.657a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <span class="loc-asset-badge @(location.Assets.Count > 0 ? "has-assets" : "no-assets")">
+                        @location.Assets.Count asset@(location.Assets.Count == 1 ? "" : "s")
+                    </span>
+                </div>
+
+                <div>
+                    <div class="loc-name">@location.Name</div>
+                    <div class="loc-college">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M3 21h18M9 21V9m6 12V9M3 9l9-6 9 6" />
+                        </svg>
+                        @ViewBag.CollegeName
+                    </div>
+                </div>
+
+                <div class="loc-actions">
+                    <a href="@Url.Action("LocationAssets", "CollegeAdmin", new { locationId = location.Id })"
+                       class="loc-action-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        View
+                    </a>
+                    <button class="loc-action-btn"
+                            onclick="openEditModal(@location.Id, '@location.Name')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
+                        </svg>
+                        Edit
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+                             
+<!-- ── Add Location Modal ── -->
+<div class="modal-overlay" id="locationModal" onclick="handleOverlayClick(event)">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h3>Add New Location</h3>
+            <button type="button" class="modal-close" onclick="closeModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <form asp-action="AddLocation" asp-controller="CollegeAdmin" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+                <label class="field-label">
+                    Location Name <span style="color:var(--rose)">*</span>
+                </label>
+                <input type="text"
+                       name="name"
+                       id="locationNameInput"
+                       class="field-input"
+                       placeholder="e.g. Computer Lab A, Physics Block, Room 201"
+                       required
+                       autocomplete="off" />
+                <p style="font-size:12px;color:#7a8a9e;margin-top:8px">
+                    This location will only be visible within @ViewBag.CollegeName.
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Add Location
+                </button>
+                <button type="button" class="btn-clear" onclick="closeModal()">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<!-- ── Edit Location Modal ── -->
+<div class="modal-overlay" id="editModal"
+     onclick="if(event.target===this) closeEditModal()">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h3>Edit Location</h3>
+            <button type="button" class="modal-close" onclick="closeEditModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <form asp-action="EditLocation" asp-controller="CollegeAdmin" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="editLocationId" name="id" />
+
+            <div class="modal-body">
+                <label class="field-label">
+                    Location Name <span style="color:var(--rose)">*</span>
+                </label>
+                <input type="text"
+                       id="editLocationName"
+                       name="name"
+                       class="field-input"
+                       placeholder="e.g. Computer Lab A"
+                       required
+                       autocomplete="off" />
+                <p style="font-size:12px;color:#7a8a9e;margin-top:8px">
+                    Only the name will be updated. Assets in this location are not affected.
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
+                    </svg>
+                    Save Changes
+                </button>
+                <button type="button" class="btn-clear" onclick="closeEditModal()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openModal() {
+            document.getElementById('locationModal').classList.add('open');
+            // Focus the input automatically
+            setTimeout(() => document.getElementById('locationNameInput').focus(), 100);
+        }
+
+        function closeModal() {
+            document.getElementById('locationModal').classList.remove('open');
+            document.getElementById('locationNameInput').value = '';
+        }
+
+        // Close when clicking the dark backdrop but not the box itself
+        function handleOverlayClick(e) {
+            if (e.target === document.getElementById('locationModal')) closeModal();
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Auto-open modal if there was an error (so user doesn't have to click again)
+        @if (TempData["Error"] != null)
+            {
+                <text>openModal();</text>
+        }
+
+
+
+
+            // ── Add location modal ───────────────────────────────────────
+            function openModal() {
+                document.getElementById('locationModal').classList.add('open');
+                setTimeout(() => document.getElementById('locationNameInput').focus(), 100);
+            }
+        function closeModal() {
+            document.getElementById('locationModal').classList.remove('open');
+            document.getElementById('locationNameInput').value = '';
+        }
+
+        // ── Edit location modal ──────────────────────────────────────
+        function openEditModal(id, name) {
+            document.getElementById('editLocationId').value = id;
+            document.getElementById('editLocationName').value = name;
+            document.getElementById('editModal').classList.add('open');
+            setTimeout(() => document.getElementById('editLocationName').focus(), 100);
+        }
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('open');
+        }
+
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeEditModal();
+            }
+        });
+
+        // Auto-open edit modal if there was an error
+        @if (TempData["Error"] != null)
+            {
+                <text>// re-open handled by TempData["LastEditId"] if needed</text>
+        }
+    </script>
+}
